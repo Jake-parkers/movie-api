@@ -6,14 +6,11 @@ import helmet from 'helmet';
 import router from './components';
 import { CommonErrors } from './error-handling/common-errors';
 import { HttpStatusCode } from './helpers/httpStatusCodes';
-import initiateMongodb from './database/mongodb';
 import ErrorHandler from './error-handling/error-handler';
 import AppException from './error-handling/base';
 import Logger from './helpers/logger';
 
 const errorHandler = new ErrorHandler(Logger);
-
-initiateMongodb();
 
 const app: Express = express();
 

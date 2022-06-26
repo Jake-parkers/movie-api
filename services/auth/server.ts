@@ -1,11 +1,10 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import app from './src';
-import Logger from './src/helpers/logger';
-import ErrorHandler from './src/error-handling/error-handler';
+import app from '.';
+import Logger from './helpers/logger';
+import ErrorHandler from './error-handling/error-handler';
 import http from 'http';
-import mongoose from 'mongoose';
 
 const errorHandler = new ErrorHandler(Logger);
 
@@ -19,14 +18,10 @@ if (!JWT_SECRET) {
   throw new Error('Missing JWT_SECRET env var. Set it and restart the server');
 }
 
-const closeOpenConnections = (errorOccurred: boolean) => {
+const closeOpenConnections = () => {
   Logger.info('Shutting down server and open connections', new Date().toJSON());
   server.close(() => {
     Logger.info('Server shut down', new Date().toJSON());
-    mongoose.connection.close(() => {
-      Logger.info('Mongoose connection closed', new Date().toJSON());
-      process.exit(errorOccurred ? 1 : 0);
-    });
   });
 };
 
@@ -48,7 +43,7 @@ process.on('uncaughtException', async (error: any) => {
   await errorHandler.logError(error);
   if (!errorHandler.isTrustedError(error)) {
     setTimeout(() => {
-      closeOpenConnections(true);
+      closeOpenConnections();
     }, 5000);
   }
 });
@@ -57,12 +52,12 @@ process.on('uncaughtException', async (error: any) => {
  * Close connections when SIGTERM interupt is received
  */
 process.on('SIGTERM', () => {
-  closeOpenConnections(false);
+  closeOpenConnections();
 });
 
 /**
  * Close connections when SIGINT interupt is received
  */
 process.on('SIGINT', () => {
-  closeOpenConnections(false);
+  closeOpenConnections();
 });

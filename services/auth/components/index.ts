@@ -3,7 +3,7 @@ import { AppResponse, SuccessResponse, ErrorResponse } from '../helpers/response
 import { HttpStatusCode } from '../helpers/httpStatusCodes';
 import { stripEmptyProperties } from '../helpers/misc';
 import AppException from '../error-handling/base';
-import auth from './auth';
+import auth from './authentication';
 
 const router = express.Router();
 

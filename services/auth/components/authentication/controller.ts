@@ -21,8 +21,6 @@ class AuthController {
       const token = this.AuthService.getToken(username, password);
       return new SuccessResponse(token, 'Login Successful');
     } catch (error) {
-      console.log('Instance --> ', error instanceof AuthError);
-      console.log('Error --> ', error);
       if (error instanceof AuthError) {
         console.error('Got here');
         throw new BadRequestException({ message: error.message });
