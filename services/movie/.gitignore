@@ -1,0 +1,8 @@
+node_modules/
+logs/
+dist/
+.env
+.DS_*
+docs/
+.husky/
+.vscode/
