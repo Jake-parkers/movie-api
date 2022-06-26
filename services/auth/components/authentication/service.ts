@@ -15,7 +15,7 @@ class AuthService implements Auth {
         name: user.name,
         role: user.role,
       },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || '',
       {
         issuer: 'https://www.netguru.com/',
         subject: `${user.id}`,
