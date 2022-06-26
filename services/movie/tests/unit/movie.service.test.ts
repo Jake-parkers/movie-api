@@ -25,12 +25,19 @@ describe('Movie Service', () => {
         sinon.assert.calledOnce(movie_info_stub.fetchAdditionalInfo)
         sinon.assert.calledOnce(movie_dal_stub.save)
         sinon.assert.calledOnce(movie_dal_stub.incrementCounter)
+        movie_dal_stub.incrementCounter.restore();
+        movie_dal_stub.save.restore();
+        movie_info_stub.fetchAdditionalInfo.restore();
     })
 
     describe('METHOD get', () => {
         let movie_info_stub: Sinon.SinonStubbedInstance<OMDBService>;
         before(() => {
             movie_info_stub = sinon.createStubInstance(OMDBService)
+        })
+
+        after(() => {
+            movie_info_stub.fetchAdditionalInfo.restore();
         })
 
         it ("it should return an array of movies when a user has some movies saved", async () => {
@@ -41,6 +48,7 @@ describe('Movie Service', () => {
     
             await MovieService.get("123");
             sinon.assert.calledOnce(movie_dal_stub.get);
+            movie_dal_stub.get.restore();
         })
     
         it ("it should return an empty array when a user has no movies saved", async () => {
@@ -51,6 +59,7 @@ describe('Movie Service', () => {
     
             await MovieService.get("123");
             sinon.assert.calledOnce(movie_dal_stub.get);
+            movie_dal_stub.get.restore();
         })
     })
 })
