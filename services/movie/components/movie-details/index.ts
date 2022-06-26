@@ -4,10 +4,11 @@ import Validator from '../../helpers/validator';
 import MovieDetailsController from './controller';
 import MovieDetailsService from './service';
 import OMDBService from '../omdb/service';
+import MovieDetailsDal from './dal';
 const router = express.Router();
 
 
-const service = new MovieDetailsService(new OMDBService);
+const service = new MovieDetailsService(new OMDBService, new MovieDetailsDal);
 const validator = new Validator();
 
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
