@@ -1,5 +1,6 @@
 import BadRequestException from '../../error-handling/bad-request-exception';
 import InvalidParamsException from '../../error-handling/invalid-params-exception';
+import ObjectExistsException from '../../error-handling/object-exists-exception';
 import { validate } from '../../helpers/misc';
 import { SuccessResponse } from '../../helpers/response';
 import { CustomValidator } from '../../helpers/validator';
@@ -23,6 +24,9 @@ class MovieDetailsController {
     } catch (error) {
       if (error instanceof InvalidParamsException) {
         throw new BadRequestException({ message: error.description, error_info: {error: "invalid_movie_title", error_description: ""} });
+      }
+      if (error instanceof ObjectExistsException) {
+        throw new BadRequestException({ message: error.description, error_info: {error: "duplicate_movie_title", error_description: ""} });
       }
       throw error;
     }

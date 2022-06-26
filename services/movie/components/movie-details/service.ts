@@ -1,4 +1,5 @@
 import InvalidParamsException from '../../error-handling/invalid-params-exception';
+import ObjectExistsException from '../../error-handling/object-exists-exception';
 import { InAppResponse, Status } from '../../helpers/response';
 import { MovieInfo, MovieRepo } from '../types';
 import { MovieDal, MovieDetails } from './types';
@@ -19,8 +20,8 @@ class MovieDetailsService implements MovieDetails {
       movie.Released = new Date(movie.Released);
       await this.MovieDal.save(movie);
       return response;
-    } catch (error) {
-      console.error("Hee: ", error);
+    } catch (error: any) {
+      if (error.code === 11000) throw new ObjectExistsException("Movie Title exists already");
       throw error;
     }
     

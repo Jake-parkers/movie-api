@@ -12,6 +12,7 @@ const MovieSchema: Schema<Movie> = new Schema(
     Title: {
       type: String,
       required: true,
+      unique: true,
     },
     Director: {
       type: String,
