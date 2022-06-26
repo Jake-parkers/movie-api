@@ -10,7 +10,7 @@ const errorHandler = new ErrorHandler(Logger);
 
 const server = http.createServer(app);
 
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 8000;
 
 const { JWT_SECRET } = process.env;
 

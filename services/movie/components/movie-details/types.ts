@@ -3,19 +3,19 @@ import { MovieInfo } from "../types";
 import { Movie } from "./models/movie";
 
 export interface MovieDetails {
-  save(title: string, username: string): Promise<InAppResponse>;
+  save(title: string, user_id: string): Promise<InAppResponse>;
 }
 
 export interface MovieDal {
   save(movie_info: MovieInfo): Promise<Movie>
 
-  incrementCounter(username: string): Promise<void>
+  incrementCounter(user_id: string): Promise<void>
 
-  getCounter(username: string): Promise<number | null>
+  getCounter(user_id: string): Promise<number | null>
 
-  getMostRecentCreationDate(username: string): Promise<string | null>
+  getMostRecentCreationDate(user_id: string): Promise<string | null>
 
-  resetCounter(username: string): Promise<void>
+  resetCounter(user_id: string): Promise<void>
 }
 
 export enum USERROLES {

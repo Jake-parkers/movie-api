@@ -9,25 +9,25 @@ class MovieDetailsDal implements MovieDal {
         return await movie.save();
     }
 
-    async incrementCounter(username: string): Promise<void> {
+    async incrementCounter(user_id: string): Promise<void> {
         await RedisClient.multi()
-            .set(username, new Date().toISOString())
-            .incr(`${username}_counter`)
+            .set(user_id, new Date().toISOString())
+            .incr(`${user_id}_counter`)
         .exec()
     }
 
-    async getCounter(username: string): Promise<number | null> {
-        const count =  await RedisClient.get(`${username}_counter`);
+    async getCounter(user_id: string): Promise<number | null> {
+        const count =  await RedisClient.get(`${user_id}_counter`);
         if (count) return parseInt(count);
         return null;
     }
 
-    async resetCounter(username: string): Promise<void> {
-        await RedisClient.set(`${username}_counter`, "0");
+    async resetCounter(user_id: string): Promise<void> {
+        await RedisClient.set(`${user_id}_counter`, "0");
     }
 
-    async getMostRecentCreationDate(username: string): Promise<string | null> {
-        return await RedisClient.get(username);
+    async getMostRecentCreationDate(user_id: string): Promise<string | null> {
+        return await RedisClient.get(user_id);
     }
 }
 

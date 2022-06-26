@@ -6,7 +6,7 @@ export interface MovieRepo {
 
 export interface MovieInfo {
     Title: string
-    Released: Date
+    Released: string
     Genre: string
     Director: string
   }

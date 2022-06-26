@@ -14,7 +14,9 @@ const validator = new Validator();
 
 router.post('/', validateMonthlyLimit, async (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log(req.body, req.query);
     const controller = new MovieDetailsController(service, validator);
+    req.body.user_id = req.query.user_id;
     return handleResponse(await controller.createMovie(req.body), res);
   } catch (error) {
     next(error);

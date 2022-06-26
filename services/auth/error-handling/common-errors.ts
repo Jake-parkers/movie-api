@@ -16,4 +16,5 @@ export enum ErrorNames {
     PAYLOAD_VALIDATION_ERROR = "invalid_payload",
     NOT_FOUND_ERROR =  "RESOURCENOTFOUND",
     SERVER_ERROR =  "SERVERERROR",
+    UNAUTHORIZED = "not_authorized",
 }

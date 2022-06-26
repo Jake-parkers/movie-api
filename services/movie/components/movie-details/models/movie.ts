@@ -4,7 +4,7 @@ export interface Movie extends Pick<Document, '_id'> {
   Title?: string;
   Director?: string;
   Genre?: string;
-  Released?: Date;
+  Released?: string;
 }
 
 const MovieSchema: Schema<Movie> = new Schema(
@@ -23,7 +23,7 @@ const MovieSchema: Schema<Movie> = new Schema(
       required: true,
     },
     Released: {
-      type: Date,
+      type: String,
       required: true,
     },
   },

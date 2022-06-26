@@ -13,16 +13,15 @@ class MovieDetailsService implements MovieDetails {
     this.MovieDal = movie_dal;
   }
 
-  async save(title: string, username: string): Promise<InAppResponse> {
+  async save(title: string, user_id: string): Promise<InAppResponse> {
     try {
       const response = await this.MovieRepo.fetchAdditionalInfo(title);
+      await this.MovieDal.incrementCounter(user_id)
       if (response.status === Status.ERROR) throw new InvalidParamsException("Movie Title is invalid");
       const movie: MovieInfo = response.data;
-      movie.Released = new Date(movie.Released);
-      await Promise.all([
-        this.MovieDal.save(movie),
-        this.MovieDal.incrementCounter(username)
-      ])
+      if (!movie.Released) movie.Released = "N/A" 
+      if (movie.Released !== "N/A") movie.Released = new Date(movie.Released).toISOString();
+      await this.MovieDal.save(movie);    
       return response;
     } catch (error: any) {
       if (error.code === 11000) throw new ObjectExistsException("Movie Title exists already");
@@ -31,9 +30,9 @@ class MovieDetailsService implements MovieDetails {
     
   }
 
-  async validateLimit(username: string) {
+  async validateLimit(user_id: string) {
     const today = new Date();
-    const last_creation_date = await this.MovieDal.getMostRecentCreationDate(username);
+    const last_creation_date = await this.MovieDal.getMostRecentCreationDate(user_id);
     if (!last_creation_date) {
       // first time
       return true;
@@ -41,12 +40,12 @@ class MovieDetailsService implements MovieDetails {
     const diff = differenceInCalendarMonths(today, new Date(last_creation_date));
     if (diff < 1) { 
       // still in the same month
-      const count = await this.MovieDal.getCounter(username);
+      const count = await this.MovieDal.getCounter(user_id);
       if (count === this.MAX_BASIC_USERS_LIMIT) return false;
       return true;
     } else {
       // we're in a new month. reset the count
-      await this.MovieDal.resetCounter(username);
+      await this.MovieDal.resetCounter(user_id);
       return true;
     }
   }

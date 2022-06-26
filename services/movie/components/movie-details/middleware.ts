@@ -8,9 +8,9 @@ import ForbiddenException from "../../error-handling/forbidden-exception";
 
 const MovieService = new MovieDetailsService(new OMDBService, new MovieDetailsDal);
 export function validateMonthlyLimit(req: Request, res: Response, next: NextFunction) {
-    const { username, role } = req.body;
-    if (!username ) {
-       throw new BadRequestException({message: "Username is required"});
+    const { user_id, role } = req.query;
+    if (!user_id ) {
+       throw new BadRequestException({message: "user_id is required"});
     }
 
     if (!role ) {
@@ -18,7 +18,7 @@ export function validateMonthlyLimit(req: Request, res: Response, next: NextFunc
      }
 
     if (role === USERROLES.BASIC) {
-        MovieService.validateLimit(username).then(isValid => {
+        MovieService.validateLimit(user_id as string).then(isValid => {
             if (isValid) return next();
             else return next(new ForbiddenException({message: "User monthly limit reached", error_info: {error: "monthly_limit_reached", error_description: "" }}));
         }).catch(error => {
