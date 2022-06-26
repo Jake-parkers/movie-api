@@ -25,10 +25,8 @@ export function validateUserToken(req: Request, res: Response, next: NextFunctio
             error_info: { error: 'invalid_token', error_description: 'Token type provided is not valid' },
         });
         const result = jwt.verify(token[1], process.env.JWT_SECRET) as UserAccessTokenPayload;
-        console.log("USER ==> ", result);
         req.query.role = result.role;
         req.query.user_id = String(result.userId);
-        console.log("Q: ", req.query);
         next()
     } catch (error: any) {
       if (error.name === 'TokenExpiredError') {

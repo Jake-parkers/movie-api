@@ -1,12 +1,16 @@
-import { MovieInfo } from "../types";
+// import { MovieInfo } from "../types";
 import MovieModel, { Movie } from "./models/movie";
 import { MovieDal } from "./types";
 import RedisClient from '../../database/redis';
 
 class MovieDetailsDal implements MovieDal {
-    async save(movie_info: MovieInfo): Promise<Movie> {
+    async save(movie_info: Movie): Promise<Movie> {
         const movie = new MovieModel(movie_info);;
         return await movie.save();
+    }
+
+    async get(user_id: string): Promise<Movie[] | null> {
+        return await MovieModel.find({ User_id: user_id }).lean()
     }
 
     async incrementCounter(user_id: string): Promise<void> {

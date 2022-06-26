@@ -25,15 +25,19 @@ if (process.env.NODE_ENV === 'development') app.use(morgan('tiny'));
 else app.use(morgan('combined'));
 
 
-app.post('/movies', validateUserToken, proxy(process.env.MOVIE_API_URL, {
+app.use('/movies', validateUserToken, proxy(process.env.MOVIE_API_URL, {
   proxyReqPathResolver: function (req) {
-    console.log("url:", req.url, req.query);
-    const { role, user_id } = req.query;
     const parts = req.url.split('?');
-    return  parts[0] + `?role=${role}&user_id=${user_id}`;
+    let first_part = parts[0];
+    let url = req.url;
+    first_part = first_part.replace('/', '/movies');
+    const role = req.query.role;
+    const user_id = req.query.user_id;
+    url = first_part + `?role=${role}&user_id=${user_id}`;
+    
+    return url;
   },
   userResDecorator: function(proxyRes, proxyResData) {
-   console.log("RES: ",proxyResData.toString('utf-8'));
    return JSON.stringify(JSON.parse(proxyResData.toString('utf-8')));
   },
   proxyErrorHandler: function(err, res, next) {

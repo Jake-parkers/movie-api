@@ -1,10 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface Movie extends Pick<Document, '_id'> {
-  Title?: string;
-  Director?: string;
-  Genre?: string;
-  Released?: string;
+    User_id: string;
+    Title?: string;
+    Director?: string;
+    Genre?: string;
+    Released?: string;
 }
 
 const MovieSchema: Schema<Movie> = new Schema(
@@ -13,6 +14,10 @@ const MovieSchema: Schema<Movie> = new Schema(
       type: String,
       required: true,
       unique: true,
+    },
+    User_id: {
+        type: String,
+        required: true,
     },
     Director: {
       type: String,

@@ -5,7 +5,7 @@ import { validate } from '../../helpers/misc';
 import { SuccessResponse } from '../../helpers/response';
 import { CustomValidator } from '../../helpers/validator';
 import { MovieDetails } from './types';
-import { CREATE_MOVIE_SCHEMA } from './validation-schema';
+import { CREATE_MOVIE_SCHEMA, GET_MOVIES_SCHEMA } from './validation-schema';
 
 class MovieDetailsController {
   private MovieDetailsService: MovieDetails;
@@ -30,6 +30,12 @@ class MovieDetailsController {
       }
       throw error;
     }
+  }
+
+  async getMovies(data: { user_id: string }) {
+    const result = validate(data, this.Validator, GET_MOVIES_SCHEMA)
+    data = result.data;
+    return new SuccessResponse(await this.MovieDetailsService.get(data.user_id), "Movies fetched successfully"); 
   }
 }
 

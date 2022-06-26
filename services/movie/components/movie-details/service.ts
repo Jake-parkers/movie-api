@@ -1,9 +1,10 @@
 import InvalidParamsException from '../../error-handling/invalid-params-exception';
 import ObjectExistsException from '../../error-handling/object-exists-exception';
-import { InAppResponse, Status } from '../../helpers/response';
-import { MovieInfo, MovieRepo } from '../types';
+import { buildInAppSucess, InAppResponse, Status } from '../../helpers/response';
 import { MovieDal, MovieDetails } from './types';
 import { differenceInCalendarMonths } from "date-fns"
+import { Movie } from './models/movie';
+import { MovieRepo } from '../types';
 class MovieDetailsService implements MovieDetails {
   private MovieRepo: MovieRepo;
   private MovieDal: MovieDal;
@@ -18,9 +19,10 @@ class MovieDetailsService implements MovieDetails {
       const response = await this.MovieRepo.fetchAdditionalInfo(title);
       await this.MovieDal.incrementCounter(user_id)
       if (response.status === Status.ERROR) throw new InvalidParamsException("Movie Title is invalid");
-      const movie: MovieInfo = response.data;
+      const movie: Movie = response.data;
       if (!movie.Released) movie.Released = "N/A" 
       if (movie.Released !== "N/A") movie.Released = new Date(movie.Released).toISOString();
+      movie.User_id = user_id;
       await this.MovieDal.save(movie);    
       return response;
     } catch (error: any) {
@@ -28,6 +30,13 @@ class MovieDetailsService implements MovieDetails {
       throw error;
     }
     
+  }
+
+  async get(user_id: string) {
+    let movies: Movie[] = []
+    const result = await this.MovieDal.get(user_id);
+    if (result) movies = result;
+    return buildInAppSucess(movies);
   }
 
   async validateLimit(user_id: string) {

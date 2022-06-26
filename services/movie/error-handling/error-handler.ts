@@ -24,7 +24,6 @@ export default class ErrorHandler {
    * @returns void
    */
   public async logError(error: any) {
-    console.log('We logging: ', error);
     if (error instanceof AppException) this.customLogger.error(error.data);
     else this.customLogger.error(error.stack || error, { type: 'SERVERERROR' });
   }
