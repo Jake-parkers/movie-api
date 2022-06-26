@@ -5,13 +5,14 @@ import MovieDetailsController from './controller';
 import MovieDetailsService from './service';
 import OMDBService from '../omdb/service';
 import MovieDetailsDal from './dal';
+import { validateMonthlyLimit } from './middleware';
 const router = express.Router();
 
 
 const service = new MovieDetailsService(new OMDBService, new MovieDetailsDal);
 const validator = new Validator();
 
-router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/', validateMonthlyLimit, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const controller = new MovieDetailsController(service, validator);
     return handleResponse(await controller.createMovie(req.body), res);

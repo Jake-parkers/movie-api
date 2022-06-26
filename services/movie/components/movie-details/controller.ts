@@ -15,11 +15,11 @@ class MovieDetailsController {
     this.Validator = validator;
   }
 
-  async createMovie(data: { title: string }) {
+  async createMovie(data: { title: string, username: string}) {
     try {
       const result = validate(data, this.Validator, CREATE_MOVIE_SCHEMA)
       data = result.data;
-      const resp = await this.MovieDetailsService.save(data.title);
+      const resp = await this.MovieDetailsService.save(data.title, data.username);
       return new SuccessResponse(resp.data, 'Movie Created Successfully');
     } catch (error) {
       if (error instanceof InvalidParamsException) {
