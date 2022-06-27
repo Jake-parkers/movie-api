@@ -1,19 +1,16 @@
 version: '3.2'
 services:
   redis:
-      image: 'redis:latest'
-      ports:
-        - '6379:6379'
+    image: 'redis:latest'
+    ports:
+      - '6379:6379'
   movie-service:
     build:
       context: ./services/movie
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.test
     container_name: movie
     ports:
       - '9000:9000'
-    volumes:
-      - ./services/movie:/app
-      - /app/node_modules
     environment:
       - JWT_SECRET=dbd5e5dc-f606-11ec-acd2-d32960984f38
       - DB_HOST=mongodb://mongo:27017/
@@ -25,21 +22,18 @@ services:
       - REDIS_PORT=6379
       - REDIS_HOST=redis
       - REDIS_PASSWORD=
-      - NODE_ENV=production
+      - NODE_ENV=test
+    command: npm run test:integration
     depends_on:
       - redis
-    command: npm run test
 
   auth-service:
     build:
       context: ./services/auth
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.test
     ports:
       - '8000:8000'
-    volumes:
-      - ./services/auth:/app
-      - /app/node_modules
     environment:
       - JWT_SECRET=dbd5e5dc-f606-11ec-acd2-d32960984f38
       - MOVIE_API_URL=movie-service:9000
-    command: npm run test
+    command: npm run test:integration

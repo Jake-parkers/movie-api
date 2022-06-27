@@ -1,0 +1,23 @@
+version: '3.2'
+services:
+  movie-service:
+    build:
+      context: ./services/movie
+      dockerfile: Dockerfile.test
+    container_name: movie
+    ports:
+      - '9000:9000'
+    environment:
+      - JWT_SECRET=dbd5e5dc-f606-11ec-acd2-d32960984f38
+      - NODE_ENV=test
+    command: npm run test:unit
+
+  auth-service:
+    build:
+      context: ./services/auth
+      dockerfile: Dockerfile.test
+    ports:
+      - '8000:8000'
+    environment:
+      - JWT_SECRET=dbd5e5dc-f606-11ec-acd2-d32960984f38
+    command: npm run test:unit

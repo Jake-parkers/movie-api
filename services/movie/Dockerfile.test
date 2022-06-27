@@ -1,0 +1,11 @@
+FROM node:16-buster
+
+RUN apt-get install libcurl4
+
+WORKDIR /app
+
+COPY ./package.json ./package-lock.json ./tsconfig.json ./
+
+RUN npm install
+
+COPY . .
