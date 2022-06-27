@@ -25,7 +25,7 @@ if (process.env.NODE_ENV === 'development') app.use(morgan('tiny'));
 else app.use(morgan('combined'));
 
 
-app.use('/movies', validateUserToken, proxy(process.env.MOVIE_API_URL, {
+app.use('/movies', validateUserToken, proxy(process.env.MOVIE_API_URL || "http://localhost:9000", {
   proxyReqPathResolver: function (req) {
     const parts = req.url.split('?');
     let first_part = parts[0];

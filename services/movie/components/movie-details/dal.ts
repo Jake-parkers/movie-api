@@ -36,8 +36,8 @@ class MovieDetailsDal implements MovieDal {
         return null;
     }
 
-    async resetCounter(user_id: string): Promise<void> {
-        await RedisClient.set(`${user_id}_counter`, "0");
+    async resetCounter(user_id: string, value: number): Promise<void> {
+        await RedisClient.set(`${user_id}_counter`, String(value));
     }
 
     async getMostRecentCreationDate(user_id: string): Promise<string | null> {

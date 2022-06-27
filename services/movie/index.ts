@@ -10,10 +10,15 @@ import ErrorHandler from './error-handling/error-handler';
 import AppException from './error-handling/base';
 import Logger from './helpers/logger';
 import initiateMongodb from './database/mongodb';
+import { dbConnect } from './database/inmemorydb';
 
 const errorHandler = new ErrorHandler(Logger);
 
-initiateMongodb();
+if (process.env.NODE_ENV === 'test') {
+  dbConnect()
+} else {
+  initiateMongodb();
+}
 
 const app: Express = express();
 

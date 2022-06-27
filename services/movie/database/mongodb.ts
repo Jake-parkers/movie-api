@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import Logger from "../helpers/logger";
 import InternalServerException from "../error-handling/internal-server-exception";
 
-const initiateMongodb = async () => {
+async function initiateMongodb() {
     try {
         await mongoose.connect(dbConfig.mongoUri, dbConfig.config);
     } catch(error: any) {

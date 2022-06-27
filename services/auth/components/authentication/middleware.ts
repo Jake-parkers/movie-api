@@ -7,9 +7,8 @@ import { UserAccessTokenPayload } from "./types";
 export function validateUserToken(req: Request, res: Response, next: NextFunction) {
     try {
       if (!req.headers.authorization) {
-        throw new UnauthorizedException({ message: 'Missing authorization' });
-        }
-    
+        return next(new UnauthorizedException({ message: 'Missing authorization' }))
+      }
         const token = req?.headers ? req.headers.authorization.split(' ') : [];
     
         // check that the value of the `Authorization` header contains both `Bearer` and `${value}`
@@ -24,7 +23,7 @@ export function validateUserToken(req: Request, res: Response, next: NextFunctio
             message: 'Invalid Token',
             error_info: { error: 'invalid_token', error_description: 'Token type provided is not valid' },
         });
-        const result = jwt.verify(token[1], process.env.JWT_SECRET) as UserAccessTokenPayload;
+        const result = jwt.verify(token[1], process.env.JWT_SECRET || "") as unknown as UserAccessTokenPayload;
         req.query.role = result.role;
         req.query.user_id = String(result.userId);
         next()

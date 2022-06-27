@@ -1,6 +1,6 @@
 // import MovieModel from "../../components/movie-details/models/movie";
-import { dummyMovieData, duplicateMovieData, invalidMovieData } from "./data";
-import { dbConnect, dbDisconnect } from "../../database/inmemorydb";
+import { dummyMovieData, duplicateMovieData, invalidMovieData, movieData1, movieData2 } from "./data";
+import { dbDisconnect } from "../../database/inmemorydb";
 // import initiateMongodb from "../../database/mongodb";
 import 'mocha'
 import { expect } from "chai";
@@ -13,9 +13,9 @@ import InvalidParamsException from "../../error-handling/invalid-params-exceptio
 import MovieModel from "../../components/movie-details/models/movie";
 import ObjectExistsException from "../../error-handling/object-exists-exception";
 
-before(async () => {
-    await dbConnect();
-})
+// before(async () => {
+//     await dbConnect();
+// })
 
 after(async () => {
     await dbDisconnect();
@@ -78,6 +78,36 @@ describe('Movie Service Tests', function () {
             } catch (error: any) {
                 expect(error).to.be.instanceOf(ObjectExistsException);
             }
+        })
+    })
+
+    describe('Getting Saved Movies', () => {
+        let movieService: MovieDetailsService;
+        before(async () => {
+            const movie_1 = new MovieModel(movieData1);
+            const movie_2 = new MovieModel(movieData2);
+            await Promise.all([movie_1.save(), movie_2.save()])
+            const movie_info_stub = sinon.createStubInstance(OMDBService, {
+                fetchAdditionalInfo: Promise.resolve(buildInAppSucess(dummyMovieData)) 
+            });
+            const MDal = new MovieDetailsDal();
+            movieService = new MovieDetailsService(movie_info_stub, MDal);
+        })
+
+        it ('should return a list of movies when the id of a user that has movies is passed', async () => {
+            const response = await movieService.get(movieData1.User_id);
+            expect(response.status).to.equal('success')
+            expect(response.data).to.not.be.null;
+            expect(response.data).to.be.an("array");
+            expect(response.data.length).to.equal(2);
+        })
+
+        it ('should return a an empty list of movies when the id of a user that hasn\'t created any movies is passes', async () => {
+            const response = await movieService.get("bad_id");
+            expect(response.status).to.equal('success')
+            expect(response.data).to.not.be.null;
+            expect(response.data).to.be.an("array");
+            expect(response.data.length).to.equal(0);
         })
     })
 })

@@ -8,16 +8,6 @@ export const dbConnect = async () => {
   const mongoUri = mongoServer.getUri();
   await mongoose.connect(mongoUri, {});
 
-  // const uri = mongoServer.getUri();
-
-  // const mongooseOpts = {
-  //       useNewUrlParser: true,
-  //       useUnifiedTopology: true,
-  //       user: '',
-  //   }
-
-  // await mongoose.connect(uri, mongooseOpts);
-
   mongoose.connection.on('connected', () => {
     console.log(`Mongoose connection successful`);
   });

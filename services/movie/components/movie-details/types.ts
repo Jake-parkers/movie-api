@@ -20,7 +20,7 @@ export interface MovieDal {
 
   getMostRecentCreationDate(user_id: string): Promise<string | null>
 
-  resetCounter(user_id: string): Promise<void>
+  resetCounter(user_id: string, value: number): Promise<void>
 }
 
 export enum USERROLES {

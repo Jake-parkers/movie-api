@@ -21,7 +21,7 @@ class MovieDetailsService implements MovieDetails {
       const response = await this.MovieRepo.fetchAdditionalInfo(title);
       await this.MovieDal.incrementCounter(user_id)
       if (response.status === Status.ERROR) throw new InvalidParamsException("Movie Title is invalid");
-      
+
       movie = response.data as Movie;
       if (!movie.Released) movie.Released = "N/A" 
       if (movie.Released !== "N/A") movie.Released = new Date(movie.Released).toISOString();
@@ -52,7 +52,7 @@ class MovieDetailsService implements MovieDetails {
       return true;
     } else {
       // we're in a new month. reset the count
-      await this.MovieDal.resetCounter(user_id);
+      await this.MovieDal.resetCounter(user_id, 0);
       return true;
     }
   }

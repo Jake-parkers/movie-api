@@ -54,7 +54,6 @@ class AppException extends Error {
     
         this.name = name;
         this.data = data;
-        this.data.timestamp = (new Date()).toJSON();
         this.httpCode = httpCode || null;
         this.isOperational = isOperational;
         this.optional_key = optional_key || null;

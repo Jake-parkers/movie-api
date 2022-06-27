@@ -21,3 +21,19 @@ export const invalidMovieData = {
     "Genre":"Action, Comedy, Crime",
     "Released": "1995-04-07"
 }
+
+export const movieData1 = {
+    "User_id": "908", 
+    "Title":"12 Angry Men",
+    "Director":"Sidney Lumet",
+    "Genre":"Crime, Drama",
+    "Released": "1987-08-15"
+}
+
+export const movieData2 = {
+    "User_id": "908", 
+    "Title":"Bad Boys",
+    "Director":"Michael Bay",
+    "Genre":"Action, Comedy, Crime",
+    "Released": "1995-04-07"
+}
