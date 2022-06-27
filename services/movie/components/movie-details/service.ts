@@ -15,21 +15,19 @@ class MovieDetailsService implements MovieDetails {
   }
 
   async save(title: string, user_id: string): Promise<InAppResponse> {
-    try {
+      let movie: Movie | null = await this.MovieDal.find(title, user_id);
+      if (movie) throw new ObjectExistsException("Movie Title exists already");
+
       const response = await this.MovieRepo.fetchAdditionalInfo(title);
       await this.MovieDal.incrementCounter(user_id)
       if (response.status === Status.ERROR) throw new InvalidParamsException("Movie Title is invalid");
-      const movie: Movie = response.data;
+      
+      movie = response.data as Movie;
       if (!movie.Released) movie.Released = "N/A" 
       if (movie.Released !== "N/A") movie.Released = new Date(movie.Released).toISOString();
       movie.User_id = user_id;
-      await this.MovieDal.save(movie);    
-      return response;
-    } catch (error: any) {
-      if (error.code === 11000) throw new ObjectExistsException("Movie Title exists already");
-      throw error;
-    }
-    
+      const saved_movie = await this.MovieDal.save(movie);    
+      return buildInAppSucess(saved_movie);
   }
 
   async get(user_id: string) {

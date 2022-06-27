@@ -17,7 +17,8 @@ describe('Movie Service', () => {
         })
         const movie_dal_stub = sinon.createStubInstance(MovieDetailsDal, {
             save: Promise.resolve(movie),
-            incrementCounter: Promise.resolve()
+            incrementCounter: Promise.resolve(),
+            find: Promise.resolve(null)
         })
         const MovieService = new MovieDetailsService(movie_info_stub, movie_dal_stub);
 
@@ -27,6 +28,7 @@ describe('Movie Service', () => {
         sinon.assert.calledOnce(movie_dal_stub.incrementCounter)
         movie_dal_stub.incrementCounter.restore();
         movie_dal_stub.save.restore();
+        movie_dal_stub.find.restore();
         movie_info_stub.fetchAdditionalInfo.restore();
     })
 

@@ -9,7 +9,7 @@
     "serve": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/server.js\"",
     "prestart": "npm run build",
     "start": "cross-env NODE_ENV=production node dist/index.js",
-    "test": "mocha --exit -r ts-node/register 'tests/**/*.ts'",
+    "test": "mocha --exit --timeout 60000 -r ts-node/register 'tests/**/*.ts'",
     "lint": "eslint ./**/*.ts",
     "format": "eslint ./**/*.ts --fix",
     "prettier": "prettier ./**/*.ts --check",

@@ -4,9 +4,19 @@ import { MovieDal } from "./types";
 import RedisClient from '../../database/redis';
 
 class MovieDetailsDal implements MovieDal {
+    
     async save(movie_info: Movie): Promise<Movie> {
-        const movie = new MovieModel(movie_info);;
+        const movie = new MovieModel(movie_info);
         return await movie.save();
+    }
+
+    async find(movie_title: string, user_id: string): Promise<Movie | null> {
+        return await MovieModel.findOne({ 
+            $and: [
+                { User_id: user_id },
+                { Title: movie_title }
+            ]
+        })
     }
 
     async get(user_id: string): Promise<Movie[] | null> {

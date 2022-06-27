@@ -12,6 +12,8 @@ export interface MovieDal {
 
   get(user_id: string): Promise<Movie[] | null>
 
+  find(movie_title: string, user_id: string): Promise<Movie | null>
+
   incrementCounter(user_id: string): Promise<void>
 
   getCounter(user_id: string): Promise<number | null>
