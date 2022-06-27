@@ -38,7 +38,7 @@ The auth server serves the purpose of both an auth server and an api gateway. Al
 ### Why
 
 - It helps to achieve separation of concerns. The auth sever does auth and should do it well while the movie server creates and fetches movies; it should also focus on that and do it well. 
-- 
+  
 - Secondly, having the auth server as an API gateway that also authorizes users helps us to avoid unncessary requests reaching other services (for instance an aunauthorized user trying to create a movie will be rejected at the API gateway without reaching the movie service at all); thus helping to control the load on the movie service.
 
 ## POSTMAN Collection

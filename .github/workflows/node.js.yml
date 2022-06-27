@@ -20,4 +20,4 @@ jobs:
         node-version: 16
         cache: 'npm'
     - name: Run Tests
-      run: docker-compose --build -f docker-compose.unit.test.yml up
+      run: docker-compose -f docker-compose.unit.test.yml up
