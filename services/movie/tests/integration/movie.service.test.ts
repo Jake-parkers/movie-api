@@ -1,7 +1,6 @@
-// import MovieModel from "../../components/movie-details/models/movie";
 import { dummyMovieData, duplicateMovieData, invalidMovieData, movieData1, movieData2 } from "./data";
 import { dbDisconnect } from "../../database/inmemorydb";
-// import initiateMongodb from "../../database/mongodb";
+
 import 'mocha'
 import { expect } from "chai";
 import sinon from "sinon";
@@ -13,9 +12,6 @@ import InvalidParamsException from "../../error-handling/invalid-params-exceptio
 import MovieModel from "../../components/movie-details/models/movie";
 import ObjectExistsException from "../../error-handling/object-exists-exception";
 
-// before(async () => {
-//     await dbConnect();
-// })
 
 after(async () => {
     await dbDisconnect();

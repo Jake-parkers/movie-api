@@ -4,17 +4,11 @@ services:
       image: 'redis:latest'
       ports:
         - '6379:6379'
-  mongo:
-    image: 'mongo:latest'
-    ports:
-      - '28017:27017'
-
   movie-service:
     build:
       context: ./services/movie
       dockerfile: Dockerfile
     container_name: movie
-      
     ports:
       - '9000:9000'
     volumes:
@@ -33,8 +27,9 @@ services:
       - REDIS_PASSWORD=
       - NODE_ENV=production
     depends_on:
-      - mongo
       - redis
+    command: npm run test
+
   auth-service:
     build:
       context: ./services/auth
@@ -47,3 +42,4 @@ services:
     environment:
       - JWT_SECRET=dbd5e5dc-f606-11ec-acd2-d32960984f38
       - MOVIE_API_URL=movie-service:9000
+    command: npm run test

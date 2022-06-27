@@ -11,17 +11,14 @@ async function initiateMongodb() {
     }
 
     mongoose.connection.on('connected', () => {
-        console.log(`Mongoose connection to ${dbConfig.mongoUri} successful`)
         Logger.info(`Mongoose connection to ${dbConfig.mongoUri} successful`);
     });
 
     mongoose.connection.on('error', (err) => {
-        console.error(`Mongoose connection error ${err}`);
         Logger.error(`Mongoose connection error ${err}`);
     });
 
     mongoose.connection.on('disconnected', () => {
-        console.log("Mongoose connection disconnected")
         Logger.info("Mongoose connection disconnected")
     })
 }
