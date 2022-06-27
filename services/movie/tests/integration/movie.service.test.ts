@@ -18,7 +18,7 @@ after(async () => {
 })
 
 describe('Movie Service Tests', function () {
-    it ('should save a movie when a valid movie title is provided', async () => {
+    it ('when a valid movie title is provided, it should save the movie', async () => {
         const movie_info_stub = sinon.createStubInstance(OMDBService, {
             fetchAdditionalInfo: Promise.resolve(buildInAppSucess(dummyMovieData)) 
         });
