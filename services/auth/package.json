@@ -2,11 +2,11 @@
   "name": "movie_api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/src/server.js",
   "scripts": {
     "build": "rimraf dist && tsc",
     "preserve": "npm run build",
-    "serve": "NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/server.js\"",
+    "serve": "NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/src/server.js\"",
     "test:integration": "mocha -r ts-node/register 'tests/integration/**.ts'",
     "test:unit": "mocha -r ts-node/register 'tests/unit/**.ts'",
     "test": "npm run test:unit && npm run test:integration",
